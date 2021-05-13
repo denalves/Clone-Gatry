@@ -1,25 +1,34 @@
-import React from "react";
-import './List.css'
+import React, { useState } from "react";
+import "./List.css";
 import PromotionCard from "components/Promotion/Card/Card";
+import UIModal from "components/UI/Modal/Modal";
 
 const PromotionList = ({ loading, error, promotions }) => {
+  const [promotionId, setPromotionId] = useState(null);
 
-  if(error) {
+  if (error) {
     return <div>algo de errado nao está certo</div>;
   }
   if (loading || promotions === null) {
     return <div>carregando</div>;
   }
 
-  if(promotions.length === 0) {
+  if (promotions.length === 0) {
     return <div>Nenhum resultado encontrado</div>;
   }
   return (
-      <div className="promotion-list">
-        {promotions.map((promotion) => (
-        <PromotionCard promotion={promotion} />
+    <div className="promotion-list">
+      {promotions.map((promotion) => (
+        <PromotionCard
+         promotion={promotion} 
+         onClickComments={() => setPromotionId(promotion.id)}
+         />
       ))}
-      </div>
-  )
+      <UIModal
+        isOpen={Boolean(promotionId)} onClickClose={() => setPromotionId(null)}>
+        <h1>comentários</h1>
+      </UIModal>
+    </div>
+  );
 };
 export default PromotionList;
