@@ -82,7 +82,7 @@
     {
       "userId": 1,
       "promotionId": 2,
-      "comment": "ppior que o comentario nao sai kkkkkkkkkkkkkkkkk",
+      "comment": "ppior que o comentario nao",
       "id": 8
     },
     {
@@ -90,6 +90,85 @@
       "promotionId": 2,
       "comment": "to achando foda namoral mrm",
       "id": 9
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "ta muito caro essa porra",
+      "id": 10
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "não vale a pena comprar isso galera",
+      "id": 11
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "mó parada",
+      "parentId": 11,
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "mó parada",
+      "id": 13
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "ta porra",
+      "parentId": 12,
+      "id": 14
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "daora memo truta",
+      "parentId": 14,
+      "id": 15
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "bagulho é louco",
+      "parentId": 15,
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "promotionId": 5,
+      "comment": "fodase os estados unidos",
+      "parentId": 12,
+      "id": 17
+    },
+    {
+      "userId": 1,
+      "promotionId": 4,
+      "comment": "bota cara",
+      "id": 18
+    },
+    {
+      "userId": 1,
+      "promotionId": 4,
+      "comment": "investimento",
+      "parentId": 18,
+      "id": 19
+    },
+    {
+      "userId": 1,
+      "promotionId": 4,
+      "comment": "boto nada po",
+      "parentId": 18,
+      "id": 20
+    },
+    {
+      "userId": 1,
+      "promotionId": 4,
+      "comment": "teste",
+      "id": 21
     }
   ],
   "users": [
