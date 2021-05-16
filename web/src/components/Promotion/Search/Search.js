@@ -1,37 +1,60 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import useApi from "components/utils/useApi";
+import UIInfiniteScroll from "components/UI/InfiniteScroll/InfiniteScroll";
 import "./Search.css";
 import PromotionList from "../List/List";
 
+const baseParams = {
+  _embed: "comments",
+  _order: "desc",
+  _sort: "id",
+  _limit: 4,
+};
+
 const PromotionSearch = () => {
+  const [page, setPage] = useState(1);
   const mountRef = useRef(null);
   const [search, setSearch] = useState("");
   const [load, loadInfo] = useApi({
-      debounceDelay: 300,
-      url: '/promotions',
-      method: 'get',
-      params: {
-        _embed: 'comments',
-        _order: 'desc',
-        _sort: 'id',
-        title_like : search || undefined,
-      },
-
+    debounceDelay: 300,
+    url: "/promotions",
+    method: "get",
   });
 
   useEffect(() => {
-    
     load({
-      debounced : mountRef.current,
-      
-    })
-    
-     if(!mountRef.current) {
-       mountRef.current = true;
-     }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+      debounced: mountRef.current,
+      params: {
+        ...baseParams,
+        _page: 1,
+        title_like: search || undefined,
+      },
+    });
+
+    if (!mountRef.current) {
+      mountRef.current = true;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
+
+  function fetchMore() {
+    const newPage = page + 1;
+    load({
+      isFetchMore: true,
+      params: {
+        ...baseParams,
+        _page: newPage,
+        title_like: search || undefined,
+      },
+      updateRequestInfo: (newRequestInfo, prevRequestInfo) => ({
+        ...newRequestInfo,
+        data: [...prevRequestInfo.data, ...newRequestInfo.data],
+      }),
+    });
+
+    setPage(newPage);
+  }
 
   return (
     <div className="promotion-search">
@@ -45,10 +68,19 @@ const PromotionSearch = () => {
         type="search"
         placeholder="Buscar"
         value={search}
-        onChange={(ev) => setSearch(ev.target.value) }
+        onChange={(ev) => setSearch(ev.target.value)}
       />
 
-      <PromotionList promotions={loadInfo.data} loading={loadInfo.loading} error={loadInfo.error} />
+      <PromotionList
+        promotions={loadInfo.data}
+        loading={loadInfo.loading}
+        error={loadInfo.error}
+      />
+      {loadInfo.data &&
+        !loadInfo.loading &&
+        loadInfo.data?.length < loadInfo.total && (
+          <UIInfiniteScroll fetchMore={fetchMore} />
+        )}
     </div>
   );
 };
