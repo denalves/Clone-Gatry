@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom'; 
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import useApi from "components/utils/useApi";
+import Field from "components/Form/Field/Field";
+import { Formik, Form } from "formik";
+import schema from "./schema";
 import "./Form.css";
 
 const initialValue = {
@@ -10,80 +13,78 @@ const initialValue = {
   price: 0,
 };
 
-const PromotionForm = ({id}) => {
-  const [values, setValues] = useState(id ? null : initialValue);
+const PromotionForm = ({ id }) => {
   const history = useHistory();
-  const [load] = useApi({
+  const [load, loadInfo] = useApi({
     url: `/promotions/${id}`,
-    method: 'get',
-    onCompleted:(response) => {
-      setValues(response.data);
-    }
+    method: "get",
   });
 
   const [save, saveInfo] = useApi({
-    url : id ? `/promotions/${id}` : '/promotions',
-    method: id ? 'put' : 'post',
+    url: id ? `/promotions/${id}` : "/promotions",
+    method: id ? "put" : "post",
     onCompleted: (response) => {
-      if(!response.error) {
-        history.push('/');
+      if (!response.error) {
+        history.push("/");
       }
-    }
-  })
-  
+    },
+  });
+
   useEffect(() => {
-    if(id) {
-     load();
+    if (id) {
+      load();
     }
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
-
-  function onChange(ev) {
-    const {name, value} = ev.target;
-
-  setValues({ ...values, [name]: value});
+  function onSubmit(formValues) {
+    save({
+      data: formValues,
+    });
   }
-
-  function onSubmit(ev) {
-      ev.preventDefault();
-      save({
-        data: values,
-      });
-  }
+  const values = id ? loadInfo.data : initialValue;
   return (
     <div>
       <h1>pormo show</h1>
       <h2>Nova promocao</h2>
 
-      {!values 
-      ? (
+      {!values ? (
         <div>carregando...</div>
-      ): (
+      ) : (
+        <Formik
+          initialValues={values}
+          onSubmit={onSubmit}
+          validationSchema={schema}
+          render={() => (
+            <Form>
+              {saveInfo.loading && <span>salvando dados...</span>}
+              <div className="promotion-form__group">
+                <Field  name="title" type="text" label="Título" />
+    
+              </div>
+              <div className="promotion-form__group">
+                <Field  name="url" type="text" label="Link" />
 
-      <form onSubmit={onSubmit}>
-        {saveInfo.loading && <span>salvando dados...</span>}
-        <div className="promotion-form__group">
-          <label htmlFor="title">Titulo</label>
-          <input id="title" name="title" type="text" onChange={onChange} value={values.title} />
-        </div>
-        <div className="promotion-form__group">
-          <label htmlFor="url">Link</label>
-          <input id="url" name="url" type="text" onChange={onChange} value={values.url} />
-        </div>
-        <div className="promotion-form__group">
-          <label htmlFor="imageUrl">Imagem (URL)</label>
-          <input id="imageUrl" name="imageUrl" type="text" onChange={onChange} value={values.imageUrl} />
-        </div>
-        <div className="promotion-form__group">
-          <label htmlFor="price">Preço</label>
-          <input id="price" name="price" type="number" onChange={onChange}  value={values.price}/>
-        </div>
-        <div>
-          <button type="submit">Salvar</button>
-        </div>
-      </form>
-       )}
+              </div>
+              <div className="promotion-form__group">
+                <Field
+                  
+                  name="imageUrl"
+                  type="text"
+                  label="Imagem (URL)"
+                />
+              </div>
+              <div className="promotion-form__group">
+                <Field  name="price" type="number" label="Preço" />
+
+              </div>
+              <div>
+                <button type="submit">Salvar</button>
+              </div>
+            </Form>
+          )}
+        />
+      )}
     </div>
   );
 };
