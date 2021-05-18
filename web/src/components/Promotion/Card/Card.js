@@ -1,11 +1,16 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
+import UIButton from "components/UI/Button/Button";
 import "./Card.css";
 
 const PromotionCard = ({ promotion, onClickComments }) => {
   return (
     <div className="promotion-card">
-      <img src={promotion.imageUrl} className="promotion-card__image" alt={promotion.title} />
+      <img
+        src={promotion.imageUrl}
+        className="promotion-card__image"
+        alt={promotion.title}
+      />
       <div className="promotion-card__info">
         <h1 className="promotion-card__title">{promotion.title}</h1>
         <span className="promotion-card__price">R$ {promotion.price}</span>
@@ -16,19 +21,29 @@ const PromotionCard = ({ promotion, onClickComments }) => {
             </div>
           )}
 
-          <button className="promotion-card__comments-count" onClick={onClickComments}>
+          <button
+            className="promotion-card__comments-count"
+            onClick={onClickComments}
+          >
             {promotion.comments.length}{" "}
             {promotion.comments.length > 1 ? "Comentários" : "Comentário"}
           </button>
-          <a
+          <UIButton
+            component="a"
             href={promotion.url}
             target="_blank"
             rel="noreferrer"
             className="promotion-card__link"
           >
             ir para o site
-          </a>
-          <Link to={`/edit/${promotion.id}`} className="promotion-card__edit-button" >Editar</Link>
+          </UIButton>
+          <UIButton
+            component={Link}
+            to={`/edit/${promotion.id}`}
+            className="promotion-card__edit-button"
+          >
+            Editar
+          </UIButton>
         </footer>
       </div>
     </div>

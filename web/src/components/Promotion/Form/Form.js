@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import useApi from "components/utils/useApi";
 import Field from "components/Form/Field/Field";
+import UIButton from "components/UI/Button/Button";
 import { Formik, Form } from "formik";
 import schema from "./schema";
 import "./Form.css";
@@ -59,27 +60,21 @@ const PromotionForm = ({ id }) => {
             <Form>
               {saveInfo.loading && <span>salvando dados...</span>}
               <div className="promotion-form__group">
-                <Field  name="title" type="text" label="Título" />
-    
+                <Field name="title" type="text" label="Título" />
               </div>
               <div className="promotion-form__group">
-                <Field  name="url" type="text" label="Link" />
-
+                <Field name="url" type="text" label="Link" />
               </div>
               <div className="promotion-form__group">
-                <Field
-                  
-                  name="imageUrl"
-                  type="text"
-                  label="Imagem (URL)"
-                />
+                <Field name="imageUrl" type="text" label="Imagem (URL)" />
               </div>
               <div className="promotion-form__group">
-                <Field  name="price" type="number" label="Preço" />
-
+                <Field name="price" type="number" label="Preço" />
               </div>
               <div>
-                <button type="submit">Salvar</button>
+                <UIButton component="button" type="submit">
+                  Salvar
+                </UIButton>
               </div>
             </Form>
           )}
